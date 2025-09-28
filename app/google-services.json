@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "123456789012",
+    "firebase_url": "https://pikpok-default-rtdb.firebaseio.com",
+    "project_id": "pikpok",
+    "storage_bucket": "pikpok.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:123456789012:android:abcdef0123456789",
+        "android_client_info": {
+          "package_name": "com.mhrlive.pikpok"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "123456789012-abcdefghijklmnopqrstuvwxyz123456.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDummy_Key_Replace_With_Actual_Key"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "123456789012-abcdefghijklmnopqrstuvwxyz123456.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
