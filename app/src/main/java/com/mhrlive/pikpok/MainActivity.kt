@@ -1,9 +1,11 @@
 package com.mhrlive.pikpok
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -14,6 +16,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var postsAdapter: PostsAdapter
+    private lateinit var fabUpload: FloatingActionButton
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
     private val posts = mutableListOf<Post>()
@@ -31,10 +34,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun initViews() {
         recyclerView = findViewById(R.id.recyclerView)
+        fabUpload = findViewById(R.id.fabUpload)
+        
         postsAdapter = PostsAdapter(posts)
         recyclerView.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = postsAdapter
+        }
+
+        fabUpload.setOnClickListener {
+            startActivity(Intent(this, UploadActivity::class.java))
         }
     }
 
@@ -54,5 +63,11 @@ class MainActivity : AppCompatActivity() {
                 }
                 postsAdapter.notifyDataSetChanged()
             }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Refresh posts when returning from upload activity
+        loadPosts()
     }
 }

@@ -7,10 +7,15 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.mhrlive.pikpok.R
 import com.mhrlive.pikpok.data.Post
 
 class PostsAdapter(private val posts: List<Post>) : RecyclerView.Adapter<PostsAdapter.PostViewHolder>() {
+
+    private val auth = FirebaseAuth.getInstance()
+    private val firestore = FirebaseFirestore.getInstance()
 
     class PostViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val profileImage: ImageView = view.findViewById(R.id.profileImage)
@@ -54,7 +59,7 @@ class PostsAdapter(private val posts: List<Post>) : RecyclerView.Adapter<PostsAd
 
         // Set click listeners
         holder.likeButton.setOnClickListener {
-            // TODO: Implement like functionality
+            likePost(post, holder.likesCount)
         }
 
         holder.commentButton.setOnClickListener {
@@ -63,6 +68,24 @@ class PostsAdapter(private val posts: List<Post>) : RecyclerView.Adapter<PostsAd
 
         holder.shareButton.setOnClickListener {
             // TODO: Implement share functionality
+        }
+    }
+
+    private fun likePost(post: Post, likesCountTextView: TextView) {
+        val currentUser = auth.currentUser ?: return
+        
+        // Update the likes count in Firestore
+        val postRef = firestore.collection("posts").document(post.id)
+        
+        firestore.runTransaction { transaction ->
+            val snapshot = transaction.get(postRef)
+            val currentLikes = snapshot.getLong("likesCount") ?: 0
+            transaction.update(postRef, "likesCount", currentLikes + 1)
+            currentLikes + 1
+        }.addOnSuccessListener { newLikesCount ->
+            likesCountTextView.text = "$newLikesCount likes"
+        }.addOnFailureListener {
+            // Handle error
         }
     }
 
